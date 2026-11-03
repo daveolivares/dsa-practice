@@ -49,3 +49,41 @@ func TestSearch(t *testing.T) {
 		})
 	}
 }
+
+func TestSearchFirst(t *testing.T) {
+	tests := []struct {
+		name   string
+		nums   []int
+		target int
+		want   int
+	}{
+		// Same as Search when the target is unique or absent.
+		{"empty", []int{}, 0, -1},
+		{"single element found", []int{1}, 1, 0},
+		{"single element not found", []int{1}, 2, -1},
+		{"first element", []int{1, 2, 3, 4, 5}, 1, 0},
+		{"last element", []int{1, 2, 3, 4, 5}, 5, 4},
+		{"middle element", []int{1, 2, 3, 4, 5}, 3, 2},
+		{"even length", []int{1, 2, 3, 4, 5, 6}, 5, 4},
+		{"larger than all", []int{1, 2, 3, 4, 5}, 6, -1},
+		{"smaller than all", []int{1, 2, 3, 4, 5}, 0, -1},
+		{"between elements", []int{1, 3, 5, 7}, 4, -1},
+
+		// Duplicates: exactly one correct answer, the first occurrence.
+		{"duplicates", []int{1, 2, 2, 3, 4}, 2, 1},
+		{"all duplicates", []int{2, 2, 2, 2, 2}, 2, 0},
+		{"duplicates at start", []int{2, 2, 3, 4, 5}, 2, 0},
+		{"duplicates at end", []int{1, 2, 3, 5, 5}, 5, 3},
+		{"duplicates of another value", []int{1, 1, 1, 1, 2}, 2, 4},
+		{"not found next to duplicates", []int{1, 3, 3, 3, 5}, 4, -1},
+		{"duplicates in right half", []int{1, 2, 3, 4, 4, 4}, 4, 3},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := SearchFirst(tt.nums, tt.target); got != tt.want {
+				t.Errorf("SearchFirst(%v, %d) = %d, want %d", tt.nums, tt.target, got, tt.want)
+			}
+		})
+	}
+}
