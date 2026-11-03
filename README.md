@@ -20,7 +20,7 @@ go test ./binarysearch/...   # one topic
 
 ### Searching
 
-- [ ] Binary search
+- [x] Binary search
 
 ### Linear structures (review)
 
