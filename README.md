@@ -24,7 +24,7 @@ go test ./binarysearch/...   # one topic
 
 ### Linear structures (review)
 
-- [ ] Singly linked list
+- [x] Singly linked list
 - [ ] Doubly linked list
 - [ ] Stack
 - [ ] Queue (linked and circular buffer)
