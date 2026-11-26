@@ -71,16 +71,8 @@ func (l *LinkedList) DeleteFirst() (int, bool) {
 	if l.head == nil {
 		return 0, false
 	}
-
 	v := l.head.value
-	if l.head.next == nil {
-		l.head = nil
-		l.tail = nil
-	} else {
-		l.head = l.head.next
-		l.head.prev = nil
-	}
-	l.length--
+	l.remove(l.head)
 	return v, true
 }
 
@@ -93,16 +85,8 @@ func (l *LinkedList) DeleteLast() (int, bool) {
 	if l.tail == nil {
 		return 0, false
 	}
-
 	v := l.tail.value
-	if l.tail.prev == nil {
-		l.head = nil
-		l.tail = nil
-	} else {
-		l.tail = l.tail.prev
-		l.tail.next = nil
-	}
-	l.length--
+	l.remove(l.tail)
 	return v, true
 }
 
@@ -112,31 +96,37 @@ func (l *LinkedList) DeleteLast() (int, bool) {
 //
 // Time: O(n).
 func (l *LinkedList) DeleteValue(value int) bool {
-	if l.head == nil {
-		return false
-	}
-
-	if l.head.value == value {
-		l.DeleteFirst()
-		return true
-	}
-
-	curr := l.head.next
-	for curr != nil && curr.next != nil {
+	for curr := l.head; curr != nil; curr = curr.next {
 		if curr.value == value {
-			curr.prev.next = curr.next
-			curr.next.prev = curr.prev
-			l.length--
+			l.remove(curr)
 			return true
 		}
-		curr = curr.next
-	}
-
-	if l.tail.value == value {
-		l.DeleteLast()
-		return true
 	}
 	return false
+}
+
+// remove unlinks n, which must be a node in the list. Each side of n is
+// handled the same way: if n has a neighbor on that side, the neighbor skips
+// over n; if not, n was at that end, so the list's end pointer moves instead.
+//
+// Time: O(1).
+func (l *LinkedList) remove(n *node) {
+	if n.prev != nil {
+		n.prev.next = n.next
+	} else {
+		l.head = n.next
+	}
+
+	if n.next != nil {
+		n.next.prev = n.prev
+	} else {
+		l.tail = n.prev
+	}
+
+	// Detach n so the removed node no longer points into the list.
+	n.prev = nil
+	n.next = nil
+	l.length--
 }
 
 // Len returns the number of elements in the list.
