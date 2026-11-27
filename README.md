@@ -26,7 +26,7 @@ go test ./binarysearch/...   # one topic
 
 - [x] Singly linked list
 - [x] Doubly linked list
-- [ ] Stack
+- [x] Stack
 - [ ] Queue (linked and circular buffer)
 
 ### Hashing (review)
